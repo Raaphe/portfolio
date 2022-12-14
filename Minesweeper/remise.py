@@ -49,11 +49,21 @@ def generate_mines(grid, nb_mines):
         grid: liste de listes de string représentant la grille de jeu
         nb_mines: le  nombre de mines à ajouter à la grille
     """
-    counter = nb_mines
+    counter = nb_mines 
+
+    
 
     while counter > 0:
-        grid[randint(0, len(grid)-1)][randint(0, len(grid)-1)] = 'X'
+
+        y, x = (randint(0, len(grid)-1),randint(0, len(grid)-1))
+
+        if grid[y][x] == 'X':
+            counter += 1 
+            continue;
+
+        grid[y][x] = 'X'
         counter -= 1
+        
 
     
     #Vous allez devoir utiliser la fonction randint du module random
@@ -82,12 +92,15 @@ def display_grid(grid, lost = False):
     first_row += "   ".join(map(str, list(range(size)))) + "\n"
     display = ""
 
+    
     for ii in range(len(grid)):
         display += generate_row(grid[ii], ii)
 
-    display = display.replace('X', '-')
-    display = display.replace('W', 'M')
 
+    if lost == False:
+        display = display.replace('X', '-')
+        display = display.replace('W', 'M')
+    
     #Une fois la grille affichée, vous pouvez utliliser la fonction replace()
     #pour cacher les mines "X" en les remplaçant par des "-".  Vous devez aussi
     #cacher les mauvaises marques "W" en les remplaçant par des marques normales.
