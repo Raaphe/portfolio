@@ -23,8 +23,8 @@ for line in data:
 
 for pairs in li_pairs:
     # organizes ranges
-    set1 = set(range(pairs[0],pairs[1]+1))
-    set2 = set(range(pairs[2],pairs[3]+1))
+    set1 = list(range(pairs[0],pairs[1]+1))
+    set2 = list(range(pairs[2],pairs[3]+1))
     print(set1, set2)
 
     for char in set1:
