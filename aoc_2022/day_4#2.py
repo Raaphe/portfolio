@@ -27,9 +27,11 @@ for pairs in li_pairs:
     set2 = list(range(pairs[2],pairs[3]+1))
     print(set1, set2)
 
-    for char in set1:
-        if char in set2:
+    for num in set1:
+        if num in set2:
             set_counter += 1 
+            break;
+            
 
 
 
