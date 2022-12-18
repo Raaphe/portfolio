@@ -1,3 +1,5 @@
+# DAY 6 PART 1
+
 # Open file + variable
 data = open('transmission.dat', 'r')
 transm = ''
