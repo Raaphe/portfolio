@@ -1,3 +1,5 @@
+# DAT 2 PART 1
+
 # opening file with all the elf calories
 data = open('rps_guide.dat', 'r')
 

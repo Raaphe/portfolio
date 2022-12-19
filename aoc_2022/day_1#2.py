@@ -1,3 +1,5 @@
+# DAY 1 PART 2
+
 # opening file with all the elf calories
 data = open('elf_cals.dat', 'r')
 

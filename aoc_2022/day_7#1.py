@@ -1,27 +1,31 @@
-# DAY 7 PART 1
-
-
-system = [('/')]
-# eg ; [('/'),  [('dir1'), ][('dir2')], [('dir3'), ('file1', 'size1'), [('subdir')]]]
-currentdir = ""
-
-# parsing
 data = open('linux_comm.dat', 'r')
 li_comm = [line.strip() for line in data]
+
 tree = []
 tree_level = 0
+cd = ''
+tree2 = []
+str1 = ''
 
-for comm in li_comm:
-    if comm[0] == '$':
-        if comm[2:4] == 'cd' and comm[5:] != '..':
+for com in li_comm:
+    if com[0] == '$':
+        if com[2:4] == 'cd' and com[5:] != '..':
             tree_level += 1
-            tree.append((comm[5:], tree_level)) 
-        elif comm[2:4] == 'cd' and comm[5:] == '..':
-            tree_level -= 1
-    elif comm[0] != '$':
-        comm = comm.split()
-        if comm[0] == 'dir':
-            #i dont know where I would add 
-            continue;
+            cd = com[5:]
+            tree.append((com[5:], tree_level)) 
+        elif com[2:4] == 'cd' and com[5:] == '..':
+            tree_level -= 1 
 
-print(tree)
+    if com[0] != '$':
+        if com[:3] != 'dir':
+            str1 += f"/{com.strip()}/"
+
+print(str1)
+
+
+class Node:
+    def __init__(self, file, dir ):
+        pass
+
+data.close()
+

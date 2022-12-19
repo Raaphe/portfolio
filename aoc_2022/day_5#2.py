@@ -1,3 +1,4 @@
+# DAY 5 PART 2
 
 # Variables + open file
 # line 1 to 20 makes the first instance of the crates and is what I have them organized as for data manipulation

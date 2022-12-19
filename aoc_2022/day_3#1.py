@@ -1,3 +1,5 @@
+# DAY 3 PART 1
+
 # opens files containing rucksacks + variables
 data = open('rucksack.dat', 'r')
 sum = 0

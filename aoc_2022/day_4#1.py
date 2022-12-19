@@ -1,3 +1,5 @@
+# DAY 4 PART 1
+
 # opens file + variable
 data = open('day4_input.dat', 'r')
 li_pairs = []

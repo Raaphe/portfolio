@@ -1,3 +1,5 @@
+# DAY 3 PART 2
+
 # all variables 
 data = open('rucksack.dat', 'r')
 li_elves = []

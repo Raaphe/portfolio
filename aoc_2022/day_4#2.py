@@ -1,3 +1,5 @@
+# DAY 4 PART 2
+
 # opens file + variable
 data = open('day4_input.dat', 'r')
 li_pairs = []
@@ -23,19 +25,19 @@ for line in data:
 
 for pairs in li_pairs:
     # organizes ranges
-    set1 = list(range(pairs[0],pairs[1]+1))
-    set2 = list(range(pairs[2],pairs[3]+1))
-    print(set1, set2)
+    list1 = list(range(pairs[0],pairs[1]+1))
+    list2 = list(range(pairs[2],pairs[3]+1))
 
-    for num in set1:
-        if num in set2:
+    # if number is found in the list it adds 1 and breaks
+    for num in list1:
+        if num in list2:
             set_counter += 1 
             break;
             
 
 
 
-
+# prints answer + closes file
 print(set_counter)
 data.close()
 
