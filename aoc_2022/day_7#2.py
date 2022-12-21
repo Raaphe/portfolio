@@ -1,42 +1,81 @@
+# DAY 7 PART 1
+
+
+# I was very stuck on this day and did not know how to properly use dictionaries.
+# I spoiled myself and much of this code was taken from Jeffery Frederick's advent of code python solution video 
+# though i didnt complete day 7 part 1 on my own, I learned much from trying to crack it
+
+
+# parsing
 data = open('linux_comm.dat', 'r')
 li_comm = [line.strip() for line in data]
-li_sizes = []
-li_under_100k = []
 
 
 
+# variables
+dirs = {'/home':0}
+path = "/home"
+
+
+# main for loop
 for com in li_comm:
+    
+    # if the line is a command 'cd' or 'ls'
     if com[0] == '$':
         
-        # whenever 'cd ..' is called
-        if com[2:4] == 'cd' and com[5:] == '..':
-
-
-            cdnum = li_sizes.pop(-1)
-            
-            if cdnum <= 100_000:
-                li_under_100k.append(cdnum)
-                
-            li_sizes = [num + cdnum for num in li_sizes]
-        
-        # when 'cd x' add 0 to li_sizes
-        elif com[2:4] == 'cd' and com[5:] != '..':
-            li_sizes.append(0)
-
-
-    else:
-        # do nothing if listing dirs
-        if com[0] == 'd':
+        # do nothing if its 'ls'
+        if com[2:4] == "ls":
             pass;
 
-        # if listing files, add all file sizes to latest dir
-        else:
-            file_num = int(com[:com.find(' ')])
-            li_sizes[-1] += file_num
+        # if its 'cd'
+        elif com[2:4] == 'cd' :
+            
+            # return to home
+            if com[5:] == '/':
+                path = "/home"
+
+            # go back to parent directory
+            elif com[5:] == '..':
+                path = path[:path.rfind('/')]
+
+            # if not 'cd /' or 'cd ..', change to new dir
+            elif com[5:] != '..' or com[5:] != '/':
+                new_dir = com[5:]
+                path = path + '/' + new_dir
+                dirs.update({path:0})
     
 
+    
 
-    print(li_sizes)
+    # does nothing when a dir is listed
+    elif com[0:3] == 'dir':
+        pass;
 
-print(sum(li_under_100k))
-print(li_under_100k)
+    # get file size
+    elif com[0:3] != 'dir':
+        file_size = int(com[:com.find(' ')])
+
+        dir = path
+        
+        for ii in range(path.count('/')):
+            dirs[dir] += file_size
+            dir = dir[:dir.rfind('/')]
+
+
+# variable for big enough file sizes
+big_enough = []
+
+# finds min amount file size for update
+limit = 30_000_000 - (70_000_000 -dirs['/home'])
+
+# if right size go into list
+for dir in dirs:
+    if dirs[dir] >= limit:
+        big_enough.append(dirs[dir])
+
+
+# print answer
+print(min(big_enough))
+
+#close file
+data.close()
