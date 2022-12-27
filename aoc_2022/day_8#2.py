@@ -1,3 +1,5 @@
+#DAY 8 PART 2
+
 # open file + variables
 data = open('tree_grid.dat', 'r')
 dummy_row = []

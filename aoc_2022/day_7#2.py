@@ -1,4 +1,4 @@
-# DAY 7 PART 1
+# DAY 7 PART 2
 
 
 # I was very stuck on this day and did not know how to properly use dictionaries.

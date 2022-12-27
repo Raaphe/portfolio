@@ -1,3 +1,5 @@
+#DAY 9 PART 1
+
 # Variables
 head_pos = (0,0)
 li_head_pos = []
