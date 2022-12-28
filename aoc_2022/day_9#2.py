@@ -104,7 +104,8 @@ with open('day9_input.dat','r') as file:
             li.append((head_pos))
             rope.update({'knot0':li})
     
-            
+# for each knot0 movement, in one loop, check if the other knots
+# change positions using the movement function
 
 
 # each knot here is represented by a loop
