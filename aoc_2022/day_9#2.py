@@ -112,18 +112,22 @@ with open('day9_input.dat','r') as file:
 
 for ii in range(len(rope['knot0'])) :
 
-    # knot 0 and knot 1 
-    headx, heady = rope['knot0'][ii]    
-    tailx, taily = rope['knot1'][-1]
+   for ii in range(10):
+       # knot 0 and knot 1 
+       try:
+          headx, heady = rope[f'knot{ii}'][ii]    
+          tailx, taily = rope['knot{ii+1}'][-1]
+       except IndexError:
+          break; #I think
+         
+       new_tail_pos = next_tail_pos(headx, heady, tailx, taily)
 
-    new_tail_pos = next_tail_pos(headx, heady, tailx, taily)
-
-    if new_tail_pos == None:
-        continue;
-    else:
-        li = list(rope['knot1'])
-        li.append(new_tail_pos)
-        rope.update({'knot1': li})
+       if new_tail_pos == None:
+           continue;
+       else:
+           li = list(rope['knot1'])
+           li.append(new_tail_pos)
+           rope.update({'knot1': li})
         
     
 
