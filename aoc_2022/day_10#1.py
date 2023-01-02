@@ -7,7 +7,7 @@ def Signal_strenght( X, cycle_count ):
 
 # Variables
 x = 1
-cycle_count = 0
+cycle_count = 1
 li_commands = []
 li_signal_strenghts = []
 li_cycle_log = []
@@ -49,10 +49,10 @@ for comm in li_commands:
 for x in li_cycle_log:
 
     # Here, if the counter ,(x[1]), is one less than the interesting signals, it calculates the signal strenght  
-    if x[1] == 19 or x[1] == 59 or x[1] == 99 or x[1] == 139 or x[1] == 179 or x[1] == 219: 
+    if x[1] == 20 or x[1] == 60 or x[1] == 100 or x[1] == 140 or x[1] == 180 or x[1] == 220: 
         
         # here the second parameter of Signal_strenght() has a +1 because in li_cycle_log, the cycles are one less
-        li_signal_strenghts.append(Signal_strenght(x[0], x[1]+1))
+        li_signal_strenghts.append(Signal_strenght(x[0], x[1]))
 
     
 # Print answer
