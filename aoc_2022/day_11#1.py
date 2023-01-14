@@ -28,7 +28,7 @@ monkey_tomfoolery = {
 }
 
 # for each round
-for rounds in range(20):
+for _ in range(20):
 
     # each monkey
     for monkey in range(8):
