@@ -1,7 +1,9 @@
 #DAY 11 PART 2
 from functools import cache
+import sys
+import math
+sys.set_int_max_str_digits(999999999)
 
-# variables
 
 @cache
 def tomfoolery_calculator(top_Monkey1, Top_Monkey2):
@@ -31,6 +33,7 @@ def monkey_parse():
 
     
         try:
+
 
             # Monkey key
             if line[0] == 'Monkey':
@@ -65,16 +68,16 @@ def monkey_parse():
         except IndexError:
             
             if operand == '*':
-                true_monkey = [number * mode for number in monkey_inventory if number // test == 0] 
-                false_monkey = [number * mode for number in monkey_inventory if number // test != 0]
+                true_monkey = [number * mode for number in monkey_inventory if (number * mode) % test == 0] 
+                false_monkey = [number * mode for number in monkey_inventory if (number * mode) % test != 0]
                     
             elif operand == '+':
-                true_monkey = [number + mode for number in monkey_inventory if number // test == 0]
-                false_monkey = [number + mode for number in monkey_inventory if number // test != 0]
+                true_monkey = [number + mode for number in monkey_inventory if (number + mode) % test == 0]
+                false_monkey = [number + mode for number in monkey_inventory if (number + mode) % test != 0]
     
             elif operand == '**':
-                true_monkey = [number * number for number in monkey_inventory if number // test == 0]
-                true_monkey = [number * number for number in monkey_inventory if number // test != 0]
+                true_monkey = [number * number for number in monkey_inventory if (number * number) % test == 0]
+                false_monkey = [number * number for number in monkey_inventory if (number * number) % test != 0]
             
             true_monkey = list(map(str, true_monkey))
             false_monkey = list(map(str, false_monkey))
@@ -147,9 +150,27 @@ def monkey_parse():
 
 
 
+li_inspect = [0,0,0,0,0,0,0,0]
 
 for _ in range(10_000):
-    
-    li_inspect = monkey_parse()
+    print(_)
+    dummy = monkey_parse() 
+    print(dummy)
+    li_inspect[0] += dummy[0]
+    li_inspect[1] += dummy[1]
+    li_inspect[2] += dummy[2]
+    li_inspect[3] += dummy[3]
+    li_inspect[4] += dummy[4]
+    li_inspect[5] += dummy[5]
+    li_inspect[6] += dummy[6]
+    li_inspect[7] += dummy[7]
 
+# finds top 2 monkeys
 print(li_inspect)
+topM1 = li_inspect.pop(li_inspect.index(max(li_inspect)))
+topM2 = li_inspect.pop(li_inspect.index(max(li_inspect)))
+
+
+# prints answer
+tomfoolery_calculator(topM1, topM2)
+
