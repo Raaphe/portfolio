@@ -1,176 +1,263 @@
-#DAY 11 PART 2
-from functools import cache
-import sys
-import math
-sys.set_int_max_str_digits(999999999)
+# This code is incredibly repetitive but it works and its my way of doing it
+# DAY 11 PART 2
 
-
-@cache
 def tomfoolery_calculator(top_Monkey1, Top_Monkey2):
     print( top_Monkey1 * Top_Monkey2 )
 
+# starting objects
+monkey_dict = {
+    'monkey0':[56, 56, 92, 65, 71, 61, 79],
+    'monkey1':[61, 85],
+    'monkey2':[54, 96, 82, 78, 69],
+    'monkey3':[57, 59, 65, 95],
+    'monkey4':[62, 67, 80],
+    'monkey5':[91],
+    'monkey6':[79, 83, 64, 52, 77, 56, 63, 92],
+    'monkey7':[50, 97, 76, 96, 80, 56]
+    }  
 
-def monkey_parse():
-    
-    with open('day11input.dat','r') as file:
-        data = file.readlines()[:]
-        
-    
-    # variables attributed to current monkey      
-    li_inspect = [0,0,0,0,0,0,0,0]
-    monkey_key = ''
-    monkey_inventory = []
-    test = 0
-    true_monkey = []
-    false_monkey = []
-    fmonkey = ''
-    tmonkey = ''
-    operand = ''
-    mode = 0
+# dict to save the amount of times a monkey has inspected an object
+monkey_tomfoolery = {
+    'monkey0':0,
+    'monkey1':0,
+    'monkey2':0,
+    'monkey3':0,
+    'monkey4':0,
+    'monkey5':0,
+    'monkey6':0,
+    'monkey7':0
+}
 
-    for line in data:
-        line = line.strip().split()
+# for each round
+for _ in range(10000):
 
-    
-        try:
+    # each monkey
+    for monkey in range(8):
 
 
-            # Monkey key
-            if line[0] == 'Monkey':
-                monkey_key = f'{line[1][0]}'
-                continue;
 
-            # monkey inventory
-            elif line[0] == "Starting":
-                monkey_inventory = list(map(int, line[2:]))
-                continue;
-
-            # new object worry calculation
-            elif line[0] == 'Operation:':
-                operand = line[4]
-                try:mode = int(line[5])
-                except ValueError:
-                    operand = '**'
-                    mode = 0
-                continue;
-        
-            # Monkey test
-            elif line[0] == 'Test:':
-                test = int(line[3])
-                continue;
-
-            # next monkey number
-            elif line[1] == 'true:':
-                tmonkey = line[5]
-            elif line[1] == 'false:': 
-                fmonkey = line[5]
-        
-        except IndexError:
+        # == monkey 0 ==
+        if monkey == 0:
             
-            if operand == '*':
-                true_monkey = [number * mode for number in monkey_inventory if (number * mode) % test == 0] 
-                false_monkey = [number * mode for number in monkey_inventory if (number * mode) % test != 0]
+            # makes a copy of a current list of items of a monkey
+            monkey_items = monkey_dict[f'monkey{str(monkey)}'][:]
                     
-            elif operand == '+':
-                true_monkey = [number + mode for number in monkey_inventory if (number + mode) % test == 0]
-                false_monkey = [number + mode for number in monkey_inventory if (number + mode) % test != 0]
+            # itters through the real list (the one in the dict)
+            # I did this so that whenever I popped a value I wasnt 
+            # forced out of the loop...
+            for item in monkey_dict[f'monkey{str(monkey)}']:       
+                monkey_tomfoolery['monkey0'] += 1
+                worry = item * 7
+
+                if _ % 250 == 0 and _ != 0:
+                    worry = worry % 9_699_690
+
+                # true or false conditions to know which monkey was next
+                if worry % 3 == 0:
+                    try:monkey_items.pop(0)
+                    except IndexError:
+                        pass;
+                    monkey_dict['monkey3'].append(worry)
+
+                else:
+                    try:monkey_items.pop(0)
+                    except IndexError:
+                        pass;
+                    monkey_dict['monkey7'].append(worry)
+
+            # resets live list in dict
+            monkey_dict[f'monkey{str(monkey)}'] = []
+
+
+        # == monkey 1 ==
+        elif monkey == 1:
+            monkey_items = monkey_dict[f'monkey{str(monkey)}'][:]
+
+
+            for item in monkey_dict[f'monkey{str(monkey)}']:   
+                monkey_tomfoolery['monkey1'] += 1
+                worry = item + 5
+            
+                
+                if _ % 250 == 0 and _ != 0:
+                    worry = worry % 9_699_690
+
+                if worry % 11 == 0:
+                    try:monkey_items.pop(0)
+                    except IndexError:
+                        pass;
+                    monkey_dict['monkey6'].append(worry)
+                
+                else:
+                    try:monkey_items.pop(0)
+                    except IndexError:
+                        pass;
+                    monkey_dict['monkey4'].append(worry)
+            
+            monkey_dict[f'monkey{str(monkey)}'] = []
+
+        # == monkey 2 ==
+        elif monkey == 2:
+            monkey_items = monkey_dict[f'monkey{str(monkey)}'][:]
+
+            for item in monkey_dict[f'monkey{str(monkey)}']:   
+            
+                monkey_tomfoolery['monkey2'] += 1
+                worry = item ** 2
+            
+
+                if _ % 250 == 0 and _ != 0:
+                    worry = worry % 9_699_690
+
+                if worry % 7 == 0:
+                    try:monkey_items.pop(0)
+                    except IndexError:
+                        pass;
+                    monkey_dict['monkey0'].append(worry)
+                else:
+                    try:monkey_items.pop(0)
+                    except IndexError:
+                        pass;
+                    monkey_dict['monkey7'].append(worry)
+
+            monkey_dict[f'monkey{str(monkey)}'] = []
+
+        # == monkey 3 ==
+        elif monkey == 3:
+            monkey_items = monkey_dict[f'monkey{str(monkey)}'][:]
+
+            for item in monkey_dict[f'monkey{str(monkey)}']:                    
+                monkey_tomfoolery['monkey3'] += 1
+                worry = item + 4
+            
+
+                if _ % 250 == 0 and _ != 0:
+                    worry = worry % 9_699_690
+
+                if worry % 2 == 0:
+                    try:monkey_items.pop(0)
+                    except IndexError:
+                        pass;
+                    monkey_dict['monkey5'].append(worry)
+
+                else:
+                    try:monkey_items.pop(0)
+                    except IndexError:
+                        pass;
+                    monkey_dict['monkey1'].append(worry)
+
+            monkey_dict[f'monkey{str(monkey)}'] = []
+
+        # == monkey 4 ==
+        elif monkey == 4:
+            monkey_items = monkey_dict[f'monkey{str(monkey)}'][:]
+            
+            for item in monkey_dict[f'monkey{str(monkey)}']:        
+            
+                monkey_tomfoolery['monkey4'] += 1
+                worry = item  * 17
+            
+
+                if _ % 250 == 0 and _ != 0:
+                    worry = worry % 9_699_690
+
+                if worry % 19 == 0:
+                    try:monkey_items.pop(0)
+                    except IndexError:
+                        pass;
+                    monkey_dict['monkey2'].append(worry)
+
+                else: 
+                    try:monkey_items.pop(0)
+                    except IndexError:
+                        pass;
+                    monkey_dict['monkey6'].append(worry)
+            
+            monkey_dict[f'monkey{str(monkey)}'] = []
+
+        # == monkey 5 ==
+        elif monkey == 5:
+            monkey_items = monkey_dict[f'monkey{str(monkey)}'][:]
+            
+            for item in monkey_dict[f'monkey{str(monkey)}']:     
+                monkey_tomfoolery['monkey5'] += 1
+                worry = item + 7
+
+
+                if _ % 250 == 0 and _ != 0:
+                    worry = worry % 9_699_690
+
+                if worry % 5 == 0:
+                    try:monkey_items.pop(0)
+                    except IndexError:
+                        pass;
+                    monkey_dict['monkey1'].append(worry)
+                else:
+                    try:monkey_items.pop(0)
+                    except IndexError:
+                        pass;
+                    monkey_dict['monkey4'].append(worry)
+
+            monkey_dict[f'monkey{str(monkey)}'] = []
+        
+        
+        # == monkey 6 ==
+        elif monkey == 6:
+            monkey_items = monkey_dict[f'monkey{str(monkey)}'][:]
     
-            elif operand == '**':
-                true_monkey = [number * number for number in monkey_inventory if (number * number) % test == 0]
-                false_monkey = [number * number for number in monkey_inventory if (number * number) % test != 0]
-            
-            true_monkey = list(map(str, true_monkey))
-            false_monkey = list(map(str, false_monkey))
-
-            if tmonkey == '0':
-                data[1] = f"{data[1][:-1] + ' ' +' '.join(true_monkey)}\n"
-            elif tmonkey == '1':
-                data[8] = f"{data[8][:-1] + ' ' +' '.join(true_monkey)}\n"
-            elif tmonkey == '2':
-                data[15] = f"{data[15][:-1] + ' ' +' '.join(true_monkey)}\n"
-            elif tmonkey == '3':
-                data[22] = f"{data[22][:-1] + ' ' +' '.join(true_monkey)}\n"
-            elif tmonkey == '4':
-                data[29] = f"{data[29][:-1] + ' ' +' '.join(true_monkey)}\n"
-            elif tmonkey == '5':
-                data[36] = f"{data[36][:-1] + ' ' +' '.join(true_monkey)}\n"
-            elif tmonkey == '6':
-                data[43] = f"{data[43][:-1] + ' ' +' '.join(true_monkey)}\n"
-            elif tmonkey == '7':
-                data[50] = f"{data[50][:-1] + ' ' +' '.join(true_monkey)}\n"
-            
-
-            if fmonkey == '0':
-                data[1] = f"{data[1][:-1] + ' ' + ' '.join(false_monkey)}\n"
-            elif fmonkey == '1':
-                data[8] = f"{data[8][:-1] + ' ' + ' '.join(false_monkey)}\n"
-            elif fmonkey == '2':
-                data[15] = f"{data[15][:-1] + ' ' + ' '.join(false_monkey)}\n"
-            elif fmonkey == '3':
-                data[22] = f"{data[22][:-1] + ' ' + ' '.join(false_monkey)}\n"
-            elif fmonkey == '4':
-                data[29] = f"{data[29][:-1] + ' ' + ' '.join(false_monkey)}\n"
-            elif fmonkey == '5':
-                data[36] = f"{data[36][:-1] + ' ' + ' '.join(false_monkey)}\n"
-            elif fmonkey == '6':
-                data[43] = f"{data[43][:-1] + ' ' + ' '.join(false_monkey)}\n"
-            elif fmonkey == '7':
-                data[50] = f"{data[50][:-1]  + ' ' + ' '.join(false_monkey)}\n"
-            
-            if monkey_key == '0':
-                data[1] = f"  Starting items: \n"
-                li_inspect[0] = len(true_monkey) + len(false_monkey) + li_inspect[0]
-            elif monkey_key == '1':
-                data[8] = f"  Starting items: \n"
-                li_inspect[1] = len(true_monkey) + len(false_monkey) + li_inspect[1]
-            elif monkey_key == '2':
-                data[15] = f"  Starting items: \n"
-                li_inspect[2] = len(true_monkey) + len(false_monkey) + li_inspect[2]
-            elif monkey_key == '3':
-                data[22] = f"  Starting items: \n"
-                li_inspect[3] = len(true_monkey) + len(false_monkey) + li_inspect[3]
-            elif monkey_key == '4':
-                data[29] = f"  Starting items: \n"
-                li_inspect[4] = len(true_monkey) + len(false_monkey) + li_inspect[4]
-            elif monkey_key == '5':
-                data[36] = f"  Starting items: \n"
-                li_inspect[5] = len(true_monkey) + len(false_monkey) + li_inspect[5]
-            elif monkey_key == '6':
-                data[43] = f"  Starting items: \n"
-                li_inspect[6] = len(true_monkey) + len(false_monkey) + li_inspect[6]
-            elif monkey_key == '7':
-                data[50] = f"  Starting items: \n"
-                li_inspect[7] = len(true_monkey) + len(false_monkey) + li_inspect[7]
-
-            with open('day11input.dat', 'w') as wfile:
-                wfile.writelines(data)
-    
-    return li_inspect
+            for item in monkey_dict[f'monkey{str(monkey)}']:     
+                monkey_tomfoolery['monkey6'] += 1
+                worry = item + 6
 
 
+                if _ % 250 == 0 and _ != 0:
+                    worry = worry % 9_699_690
+
+                if worry % 17 == 0:
+                    try:monkey_items.pop(0)
+                    except IndexError:
+                        pass;
+                    monkey_dict['monkey2'].append(worry)
+                else: 
+                    try:monkey_items.pop(0)
+                    except IndexError:
+                        pass;
+                    monkey_dict['monkey0'].append(worry)
+
+            monkey_dict[f'monkey{str(monkey)}'] = []
+
+        # == monkey 7 ==
+        elif monkey == 7:
+            monkey_items = monkey_dict[f'monkey{str(monkey)}'][:]
+
+            for item in monkey_dict[f'monkey{str(monkey)}']:      
+                monkey_tomfoolery['monkey7'] += 1
+                worry = item +3
 
 
-li_inspect = [0,0,0,0,0,0,0,0]
+                if _ % 250 == 0 and _ != 0:
+                    worry = worry % 9_699_690
 
-for _ in range(10_000):
-    print(_)
-    dummy = monkey_parse() 
-    print(dummy)
-    li_inspect[0] += dummy[0]
-    li_inspect[1] += dummy[1]
-    li_inspect[2] += dummy[2]
-    li_inspect[3] += dummy[3]
-    li_inspect[4] += dummy[4]
-    li_inspect[5] += dummy[5]
-    li_inspect[6] += dummy[6]
-    li_inspect[7] += dummy[7]
+                if worry % 13 == 0:
+                    try:monkey_items.pop(0)
+                    except IndexError:
+                        pass;
+                    monkey_dict['monkey3'].append(worry)
+                else:
+                    try:monkey_items.pop(0)
+                    except IndexError:
+                        pass;
+                    monkey_dict['monkey5'].append(worry)
+
+            monkey_dict[f'monkey{str(monkey)}'] = []
+
+
 
 # finds top 2 monkeys
-print(li_inspect)
-topM1 = li_inspect.pop(li_inspect.index(max(li_inspect)))
-topM2 = li_inspect.pop(li_inspect.index(max(li_inspect)))
+li_tomfoolerage = list(monkey_tomfoolery.values())
+topM1 = li_tomfoolerage.pop(li_tomfoolerage.index(max(li_tomfoolerage)))
+topM2 = li_tomfoolerage.pop(li_tomfoolerage.index(max(li_tomfoolerage)))
 
-
+print(li_tomfoolerage)
 # prints answer
 tomfoolery_calculator(topM1, topM2)
-
